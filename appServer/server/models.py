@@ -1,0 +1,39 @@
+from django.db import models
+from django.utils import timezone
+from django.conf import settings
+from pprint import pprint
+import os
+
+def upload_to_path(instance,filename):	
+	if(instance.__class__.__name__=='Developer'):
+		return (os.path.join(settings.MEDIA_ROOT,'certificates', '%s' % instance.developer_name,filename))
+	elif(instance.__class__.__name__=='Application'):
+		return (os.path.join(settings.MEDIA_ROOT,'applications', '%s' % instance.application_name,filename))
+	print(str(instance.__class__.__name__))
+	
+
+class Developer(models.Model):
+	certificate = models.FileField(upload_to=upload_to_path)
+	developer_name = models.CharField(max_length=200)
+	filePath = models.CharField(max_length=200)
+
+
+	
+
+class Application(models.Model):
+	application_name = models.CharField(max_length=400)	
+	pub_date = models.DateTimeField('date_published',default=timezone.now)		
+	developer = models.ForeignKey(Developer, on_delete=models.CASCADE)
+	iconName = models.CharField(max_length=400)
+	packageFile = models.FileField(upload_to=upload_to_path)
+	filePath = models.CharField(max_length=400)
+	size = models.DecimalField(max_digits=4, decimal_places=2, default=1.6)
+	
+	def __str__(self):
+		return self.application_name
+
+	#def upload_to_path(instance):
+	#	return os.path.join(settings.MEDIA_ROOT,'applications', '%s' % instance.application_name)
+
+
+
