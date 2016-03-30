@@ -27,8 +27,18 @@ class Application(models.Model):
 	iconName = models.CharField(max_length=400)
 	packageFile = models.FileField(upload_to=upload_to_path)
 	filePath = models.CharField(max_length=400)
-	size = models.DecimalField(max_digits=4, decimal_places=2, default=1.6)
-	
+	size = models.DecimalField(max_digits=4, decimal_places=2, default=1.6)	
+	MEMORY_LIMITED_0 = 'memlimited0'
+	CPU_LIMITED_0 = 'cpulimited0'
+	CPU_LIMITED_1 = 'cpulimited1'
+	NONE = 'none'
+	CGROUP_CHOICES = (
+		(MEMORY_LIMITED_0, 'memlimited0'),
+		(CPU_LIMITED_0, 'cpulimited0'),
+		(CPU_LIMITED_1, 'cpulimited1'),
+		(NONE, 'none'),
+	)
+	cgroup = models.CharField(max_length=30, choices=CGROUP_CHOICES, default=NONE)
 	def __str__(self):
 		return self.application_name
 

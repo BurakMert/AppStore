@@ -25,14 +25,13 @@ SECRET_KEY = '(xi+-osog+6$!zjxh8+ydr%9s%$$y9#z_u8=wsg5kp@3@$4o56'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
 
 # Application definition
 
 INSTALLED_APPS = (
-    'server',
-    'sslserver',
+    'server',    
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -101,9 +100,9 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
-
+STATIC_URL = '/static/'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
-STATIC_URL = '/static/'
+

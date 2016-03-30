@@ -32,8 +32,18 @@
                     	<option value='{{ dev.developer_name }}'>{{ dev.developer_name }}</option>
                	 	{% endfor %}
             	</select>
-           		<p><input type="submit" value="Upload"/></p>
-           	{% endif %}
+            {% endif %}
+                <label> Cgroup :</label>
+                <select name="cgroup">
+                    {% for group in cgroup_choices %}
+                        <option value='{{ group }}'>{{ group }}</option>
+                        {% if group == "none" %}
+                            <option value='{{ group }}' selected>{{ group }}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+           	<p><input type="submit" value="Upload"/></p>
+           	
         </form>
     </body>
 

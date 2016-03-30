@@ -38,6 +38,7 @@ def index(request):
 		orderedApp['developer'] = app.developer.developer_name
 		orderedApp['icon'] = app.iconName
 		orderedApp['size'] = float(app.size)
+		orderedApp['cgroup'] = app.cgroup
 		json_response['applications'].append(orderedApp)		
 	return HttpResponse(json.dumps(json_response))
 
@@ -49,6 +50,7 @@ def show(request, application_id):
 	json_response['developer'] = app.developer.developer_name	
 	json_response['icon'] = app.iconName		
 	json_response['size'] = float(app.size)
+	json_response['cgroup'] = app.cgroup
 	return HttpResponse(json.dumps(json_response))
 
 def download(request, application_id):
@@ -64,10 +66,11 @@ def download(request, application_id):
 @login_required(login_url ='/login')
 def new(request):	
 	form = ApplicationForm()
-	developers = Developer.objects.all() 
+	developers = Developer.objects.all()
+	cgroup_choices = ['memlimited0','cpulimited0','cpulimited1','none'] 
 	return render_to_response(
 		'application/new.html',
-		{'form':form, 'developers':developers },
+		{'form':form, 'developers':developers, 'cgroup_choices':cgroup_choices},
 		context_instance=RequestContext(request)
 		)
 	
@@ -134,7 +137,8 @@ def create(request):
 				default_storage.delete(tempPath)
 				app_name = request.POST["name"]	
 				icon_name = app_name + '.png'
-				application = Application(application_name=app_name , developer=dev, packageFile=request.FILES['packageFile'],filePath=file_path, iconName =icon_name, size=appSize)
+				cgroup = request.POST["cgroup"]
+				application = Application(application_name=app_name , developer=dev, packageFile=request.FILES['packageFile'],filePath=file_path, iconName =icon_name, size=appSize, cgroup=cgroup)
 				application.save()
 				messages.add_message(request,messages.INFO,'Application Saved: Signature verified')			
 			else:
